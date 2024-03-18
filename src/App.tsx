@@ -1,26 +1,46 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Todo from "./pages/Todo"
+import Login from './pages/Auth/Login';
+import Register from "./pages/Auth/Register"
+import MainLayout from './layouts/Main';
+import AuthLayout from './layouts/AuthLayout'
+import { NotificationContext, TAppNotification } from "./Context/AppContext";
+import { notification } from "antd"
+import { Provider } from 'react-redux';
+import store from './store';
+import { Route, BrowserRouter, Link, Router, Routes, useNavigate } from 'react-router-dom';
+import StateFull from './components/statefull';
+import StateLess from './components/stateless';
+import AuthMiddleware from './middleware/AuthMiddleware';
+let apiNotification: TAppNotification
 
-function App() {
+const App = () => {
+  const [api, contextHolder] = notification.useNotification()
+  apiNotification = api
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Provider store={store}>
+      <BrowserRouter>
+        <NotificationContext.Provider value={{ api }}>
+          {contextHolder}
+          <Routes>
+            <Route element={<MainLayout />} >
+              <Route path="todo" element={<Todo />} loader={AuthMiddleware}></Route>
+              <Route path="stateless" element={<StateLess />} ></Route>
+              <Route path="statefull" element={<StateFull />}></Route>
+            </Route>
+            <Route element={<AuthLayout />}>
+              <Route path="login" element={<Login />}></Route>
+              <Route path="register" element={<Register />}></Route>
+            </Route>
+          </Routes>
+        </NotificationContext.Provider>
+      </BrowserRouter>
+    </Provider>
+  )
+}
+
+export {
+  apiNotification,
 }
 
 export default App;
