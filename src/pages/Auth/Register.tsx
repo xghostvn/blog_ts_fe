@@ -1,39 +1,30 @@
 
-import { Form, Input, Button, notification } from "antd"
-import axios from "axios"
-import { toast } from "react-toastify"
-import { SmileOutlined } from '@ant-design/icons';
-import { useNotificationContext } from "../../Context/AppContext";
+import { Form, Input, Button } from "antd"
 import { useNavigate } from "react-router-dom";
+import _ from "lodash"
+import "./index.css"
+import { RegisterData } from "../../reducers/auth";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { register } from "../../reducers/auth";
 const Register = () => {
     const [form] = Form.useForm()
-    const api = useNotificationContext()
     const navigate = useNavigate()
-    const register = (values: any) => {
-        console.log("1")
-        axios.post("http://blog_service.com/api/auth/register", values).then(e => {
-            api?.api.success({
-                message: 'Register Successful !!!',
-                icon: <SmileOutlined style={{ color: '#108ee9' }} />,
-            })
-            navigate("/login")
-        }).catch(e => {
-            // openNotification()
-            api?.api.error({
-                message: e.response.data.error_msg,
-                icon: <SmileOutlined style={{ color: '#108ee9' }} />,
-            })
-        })
+    const dispatch = useAppDispatch()
+    const redirectLoginPage = ()=> {
+        navigate("/login")
+    }
+    const submit = (values: any) => {
+        const data = values as RegisterData
+        dispatch((register(_.merge(data, {
+            callback : redirectLoginPage
+        }))))
     }
     return (
         <>
             <Form form={form}
-                onFinish={register}
+                onFinish={submit}
                 layout="vertical"
-                style={{
-                    margin: "auto"
-                }}
-                className="w-25 py-3"
+                className="w-100 p-3 m-auto"
             >
                 <Form.Item label="Name" name={"name"} rules={[{
                     required: true,
@@ -76,10 +67,11 @@ const Register = () => {
                     <Input.Password />
                 </Form.Item>
 
-                <Form.Item style={{ textAlign: "center" }}>
-                    <Button type="primary" htmlType="submit">
+                <Form.Item className="text-center">
+                    <Button type="primary" className="w-100" htmlType="submit">
                         Register
                     </Button>
+                    <span className="text-primary d-block my-3 pe-auto" onClick={redirectLoginPage}><u>Already have a account ?</u></span>
                 </Form.Item>
             </Form>
         </>

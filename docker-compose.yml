@@ -1,0 +1,14 @@
+version: '3.5'
+services:
+  react_app:
+   container_name : react_app
+   build:
+     context : .
+     dockerfile : ./Dockerfile
+   image : "xghostvn/react_image"
+   volumes :
+     - ./:/app
+   ports:
+    - "9000:80"
+   command : /bin/sh "setup.sh"
+   restart : always

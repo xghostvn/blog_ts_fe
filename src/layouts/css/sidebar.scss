@@ -1,0 +1,52 @@
+.sidebar {
+    background-color: #001529;
+}
+
+
+@mixin side_bar_responsive ($breakpoint) {
+    @if $breakpoint == sm {
+        @media (min-width : 576px) {
+            @content
+        };
+    }
+    @else if $breakpoint == md {
+        @media (min-width : 768px) {
+            @content
+        };
+    }
+    @else if $breakpoint == lg {
+        @media (min-width : 992px) {
+            @content
+        };
+    }
+    @else if $breakpoint == elg {
+        @media (min-width : 1200px) {
+            @content
+        };
+    }
+}
+
+@include side_bar_responsive(sm) {
+    .header_side_bar {
+        font-size: 1rem !important;
+    }
+}
+
+@include side_bar_responsive(md) {
+    .header_side_bar {
+        font-size: 1rem !important;
+    }
+}
+
+@include side_bar_responsive(lg) {
+    .header_side_bar {
+        font-size: 1.4rem !important;
+    }
+}
+
+@include side_bar_responsive(elg) {
+    .header_side_bar {
+        font-size: 1.4rem !important;
+    }
+}
+

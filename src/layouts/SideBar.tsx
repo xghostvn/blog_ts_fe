@@ -1,27 +1,39 @@
-import { redirect, useNavigate, Link} from "react-router-dom";
-import { Flex, Layout, Menu } from "antd"
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
+import { Link } from "react-router-dom";
+import { Menu } from "antd"
+import { AppleOutlined, OrderedListOutlined, FolderOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import React, { useEffect } from "react"
-const { Header, Content, Sider } = Layout
-
-
-const icons = [
-    UserOutlined, LaptopOutlined, NotificationOutlined
-]
-
+import "./css/sidebar.scss"
 const SidebarMenu: MenuProps["items"] = [
     {
-        label: (
-            <Link to={"/todo"}>
-                Todo
-            </Link>
-        ),
-        key: "/todo"
+        label: "Todo",
+        key: "todo",
+        icon: <OrderedListOutlined />,
+        children: [
+            {
+
+                label: (
+                    <Link to={"/todo"} className="text-decoration-none">
+                        Create Todo
+                    </Link>
+                ),
+                key: "Create todo",
+                icon: <FolderOutlined />
+            },
+            {
+                key: "List todo",
+                label: (
+                    <Link to={"/todo"} className="text-decoration-none">
+                        List Todo
+                    </Link>
+                ),
+                icon: <FolderOutlined />
+            },
+        ]
     },
     {
         label: (
-            <Link to={"/statefull"}>
+            <Link to={"/statefull"} className="text-decoration-none">
                 StateFull
             </Link>
         ),
@@ -29,50 +41,21 @@ const SidebarMenu: MenuProps["items"] = [
     },
     {
         label: (
-            <Link to={"/stateless"}>
+            <Link to={"/stateless"} className="text-decoration-none">
                 StateLess
             </Link>
         ),
         key: "/stateless"
     },
     {
-
-        label : (
-            <Link to={"/login"}>
-                Login
+        label: (
+            <Link to={"/practice-boostrap"} className="text-decoration-none">
+                Practice bootstrap
             </Link>
         ),
-        key : "/login"
+        key: "/practice-bootstrap"
     }
 ];
-
-
-const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-    (icon, index) => {
-        const key = String(index + 1);
-        return {
-            key: `sub${key}`,
-            icon: React.createElement(icon),
-            label: `subnav ${key}`,
-            children: new Array(4).fill(null).map((_, j) => {
-                const subKey = index * 4 + j + 1;
-                return {
-                    key: subKey,
-                    label: `option${subKey}`,
-                    children: new Array(2).fill(null).map((_, j) => {
-                        return {
-                            key: subKey,
-                            label: `option${subKey}`,
-                        }
-                    })
-                };
-            }),
-        };
-    },
-);
-
-
-
 const AppSideBar = () => {
     useEffect(() => {
         console.log("sidebar moutned")
@@ -82,15 +65,20 @@ const AppSideBar = () => {
         }
     })
     return (
-        <Sider>
+        <div className="container-fluid p-0 m-0 sidebar h-100">
+            <p className="text-white text-center text-white header_side_bar px-2">
+                <AppleOutlined className="mx-2 my-4"/>
+                <Link to={"/"} className="text-decoration-none text-white">
+                    WebService
+                </Link>
+            </p>
             <Menu
                 mode="inline"
                 theme="dark"
                 items={SidebarMenu}
             >
-
             </Menu>
-        </Sider>
+        </div>
     );
 }
 
