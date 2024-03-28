@@ -29,6 +29,7 @@ jobs:
     - run: npm ci
     - run: CI=false  npm run build 
     - name : Build and Push Docker Image
-      run : docker login --username="xghostvn47@gmail.com" --password="1234qwerS@"
+      run : |
+            docker login --username="xghostvn47@gmail.com" --password="1234qwerS@"
             docker build -t react_image -f prod.Dockerfile .
             docker push xghostvn/react_image
